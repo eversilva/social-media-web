@@ -1,7 +1,11 @@
 export const APP_ROUTES = {
-    private: {},
-    public: {
-        app: '/',
-        login: '/login'
-    },
+  private: {
+    dashboard: {
+      root: '/dashboard'
+    }
+  },
+  public: {
+    app: '/',
+    login: '/login'
+  },
 }

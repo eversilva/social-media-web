@@ -1,26 +1,24 @@
 "use client";
 
 import { FormEvent, ChangeEvent, useState } from "react";
-import { EnterIcon, EyeClosedIcon, EyeOpenIcon } from "@radix-ui/react-icons";
-import {
-  Button,
-  Flex,
-  Heading,
-  IconButton,
-  Link,
-  Text,
-  TextField,
-} from "@radix-ui/themes";
+import AuthFormFeedback from "./Feedback";
 import NextLink from "next/link";
 import checkIsValidEmail from "@/helpers/check-is-valid-email";
+import { fetchAuthLogin } from "@/data/auth";
+import { useRouter } from "next/navigation";
+import { Eye as EyeIcon, EyeOff as EyeOffIcon } from "lucide-react";
+import { APP_ROUTES } from "@/config/app-routes";
 
 const MINUMUM_PASSWORD_LENGTH = 6;
 
 const LoginForm = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isShowPassword, setIsShowPassword] = useState(false);
+  const { push } = useRouter();
 
   const handleChangeFormInput = (event: ChangeEvent<HTMLInputElement>) => {
+    setErrorMessage(null);
     const { value, name } = event.target;
     setFormData({
       ...formData,
@@ -44,65 +42,58 @@ const LoginForm = () => {
 
   const handleFormSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
+    const { email, password } = formData;
+
+    fetchAuthLogin({ email, password })
+      .then(() => {
+        push(APP_ROUTES.private.dashboard.root);
+      })
+      .catch((error) => {
+        setErrorMessage(error?.message);
+      });
   };
 
   return (
-    <Flex direction="column" gap="3" asChild>
-      <form onSubmit={handleFormSubmit}>
-        <Heading align="center">Acessar a conta</Heading>
-        <Text as="label" htmlFor="email" weight="medium">
-          E-mail
-        </Text>
-        <TextField.Root>
-          <TextField.Input
-            placeholder="example@gmail.com"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChangeFormInput}
-          />
-        </TextField.Root>
+    <form onSubmit={handleFormSubmit}>
+      <h3>Acessar a conta</h3>
+      <label htmlFor="email">E-mail</label>
+      <input
+        placeholder="example@gmail.com"
+        id="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChangeFormInput}
+      />
 
-        <Flex direction="column" gap="1">
-          <Text as="label" htmlFor="password" weight="medium">
-            Senha
-          </Text>
-          <TextField.Root>
-            <TextField.Input
-              placeholder="******"
-              name="password"
-              id="password"
-              value={formData.password}
-              onChange={handleChangeFormInput}
-              type={isShowPassword ? "name" : "password"}
-            />
-            <TextField.Slot>
-              <IconButton
-                type="button"
-                radius="full"
-                variant="ghost"
-                onClick={handleToggleShowPassword}
-              >
-                {isShowPassword && <EyeClosedIcon />}
-                {!isShowPassword && <EyeOpenIcon />}
-              </IconButton>
-            </TextField.Slot>
-          </TextField.Root>
-        </Flex>
+      <label htmlFor="password">Senha</label>
+      <input
+        placeholder="******"
+        name="password"
+        id="password"
+        value={formData.password}
+        onChange={handleChangeFormInput}
+        type={isShowPassword ? "text" : "password"}
+      />
+      <button
+        aria-label="toggleShowPassword"
+        type="button"
+        onClick={handleToggleShowPassword}
+      >
+        {isShowPassword && <EyeOffIcon />}
+        {!isShowPassword && <EyeIcon />}
+      </button>
 
-        <Flex direction="row-reverse" justify="between">
-          <Flex justify="end" gap="3">
-            <Button variant="soft">Criar conta</Button>
-            <Button variant="solid" disabled={!handleValidateForm()}>
-              Acessar <EnterIcon />
-            </Button>
-          </Flex>
-          <Link size="3" asChild>
-            <NextLink href="/forgot-password">Esqueceu a senha?</NextLink>
-          </Link>
-        </Flex>
-      </form>
-    </Flex>
+      <div>
+        <NextLink href="/register">Criar conta</NextLink>
+        <button disabled={!handleValidateForm() || !!errorMessage}>
+          Acessar
+        </button>
+      </div>
+      <NextLink href="/forgot-password">Esqueceu a senha?</NextLink>
+
+      {errorMessage && <AuthFormFeedback message={errorMessage} />}
+    </form>
   );
 };
 

@@ -1,16 +1,10 @@
-import { RocketIcon } from "@radix-ui/react-icons";
-import { Button, Heading } from "@radix-ui/themes";
 import NextLink from "next/link";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Homepage",
+};
 
 export default function Home() {
-  return (
-    <>
-      <Heading>Home</Heading>
-      <Button variant="classic" asChild>
-        <NextLink href="/login">
-          Go to login <RocketIcon />
-        </NextLink>
-      </Button>
-    </>
-  );
+  return <NextLink href="/login">Go to login</NextLink>;
 }

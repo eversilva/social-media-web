@@ -1,8 +1,9 @@
 "use client";
+
 import React, { useEffect } from "react";
 import { APP_ROUTES } from "@/config/app-routes";
 import { useRouter } from "next/navigation";
-import { ThemeProvider } from "@/contexts/Theme";
+import { checkIsAuthenticate } from "@/helpers/check-is-authenticate";
 
 type Props = {
   children: React.ReactNode;
@@ -11,19 +12,19 @@ type Props = {
 const PrivateRoutes = ({ children }: Props) => {
   const { push } = useRouter();
 
-  const isUserAuthenticate = true;
+  const isUserAuthenticate = checkIsAuthenticate();
 
   useEffect(() => {
     if (!isUserAuthenticate) {
-      push(APP_ROUTES.public.app);
+      push(APP_ROUTES.public.login);
     }
   }, [isUserAuthenticate, push]);
 
   return (
-    <React.Fragment>
+    <>
       {!isUserAuthenticate && null}
       {isUserAuthenticate && children}
-    </React.Fragment>
+    </>
   );
 };
 
