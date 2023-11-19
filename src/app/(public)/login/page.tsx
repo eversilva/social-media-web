@@ -1,5 +1,3 @@
-import LoginForm from "@/components/Auth/Form";
-
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -7,7 +5,7 @@ export const metadata: Metadata = {
 };
 
 const Login = () => {
-  return <LoginForm />;
+  return <p>Login</p>;
 };
 
 export default Login;

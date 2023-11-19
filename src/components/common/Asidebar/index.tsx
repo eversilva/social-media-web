@@ -9,10 +9,27 @@ import {
   MessagesSquare,
   NewspaperIcon,
   PieChartIcon,
+  StoreIcon,
+  TrophyIcon,
 } from "lucide-react";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
+import RocketIcon from "@/assets/icons/rocket.png";
 
 const FEATURES_GROUP = [
+  {
+    title: "Communication Center",
+    features: [
+      { name: "Feed", href: "/feed", icon: <NewspaperIcon /> },
+      { name: "Chat", href: "/chat", icon: <MessagesSquare />, label: "3" },
+      {
+        name: "Notifications",
+        href: "/notifications",
+        icon: <BellIcon />,
+        label: "+9",
+      },
+    ],
+  },
   {
     title: "Management Hub",
     features: [
@@ -22,32 +39,32 @@ const FEATURES_GROUP = [
     ],
   },
   {
-    title: "Communication Center",
+    title: "Space",
     features: [
-      { name: "Chat", href: "/chat", icon: <MessagesSquare /> },
-      { name: "Feed", href: "/feed", icon: <NewspaperIcon /> },
-      { name: "Notifications", href: "/notifications", icon: <BellIcon /> },
+      { name: "Store", href: "/store", icon: <StoreIcon /> },
+      {
+        name: "Achievement",
+        href: "/achievement",
+        icon: <TrophyIcon />,
+      },
     ],
   },
 ];
 
-const Navbar = () => {
+const Asidebar = () => {
   const pathname = usePathname();
 
   return (
-    <nav className="w-64 p-4 min-h-full bg-gray-900">
+    <aside className="w-64 p-4 min-h-full bg-gray-900">
       <div className="flex items-center gap-2 mb-6 mt-2">
-        <div className="flex gap-2">
-          <div className="h-3 w-3 rounded-full bg-green-600" />
-          <div className="h-3 w-3 rounded-full bg-yellow-400" />
-          <div className="h-3 w-3 rounded-full bg-red-600" />
-        </div>
+        <Image src={RocketIcon} alt="Ícone de foguete" width={40} />
+        <h3 className="text-gray-200 text-2xl">.networkGU</h3>
       </div>
 
       {FEATURES_GROUP.map((group, index) => (
         <Fragment key={`group-${index}`}>
           <div>
-            <h3 className="text-gray-200 font-bold mb-2">{group.title}</h3>
+            <h3 className="text-gray-200 text-xs mb-2">{group.title}</h3>
             <ul className="flex flex-col gap-1">
               {group.features.map((feature, index) => {
                 const isActive = pathname === feature.href;
@@ -64,6 +81,7 @@ const Navbar = () => {
                     <NextLink href={feature.href} className="flex-1">
                       {feature.name}
                     </NextLink>
+                    {feature?.label && <span>{feature.label}</span>}
                   </li>
                 );
               })}
@@ -74,8 +92,8 @@ const Navbar = () => {
           )}
         </Fragment>
       ))}
-    </nav>
+    </aside>
   );
 };
 
-export default Navbar;
+export default Asidebar;

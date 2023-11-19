@@ -3,5 +3,9 @@ type Props = {
 };
 
 export default function Layout({ children }: Props) {
-  return <div className="bg-purple">{children}</div>;
+  return (
+    <div className="bg-gray-900 flex items-center justify-center min-h-screen">
+      {children}
+    </div>
+  );
 }

@@ -11,12 +11,15 @@
     "test:without-coverage": "jest --collectCoverage=false"
   },
   "dependencies": {
+    "add": "^2.0.6",
     "axios": "^1.5.1",
     "jwt-decode": "^3.1.2",
     "lucide-react": "^0.288.0",
     "next": "13.5.4",
+    "next-auth": "^4.24.3",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^6.1.4",

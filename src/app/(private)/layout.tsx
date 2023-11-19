@@ -1,4 +1,5 @@
-import Navbar from "@/components/common/Navbar";
+import Asidebar from "@/components/common/Asidebar";
+import Container from "@/components/common/Container";
 
 type Props = {
   children: React.ReactNode;
@@ -7,8 +8,8 @@ type Props = {
 const Layout = ({ children }: Props) => {
   return (
     <div className="flex min-h-screen">
-      <Navbar />
-      <main className="flex-1">{children}</main>
+      <Asidebar />
+      <Container>{children}</Container>
     </div>
   );
 };
